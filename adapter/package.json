@@ -1,0 +1,20 @@
+{
+    "name": "@nightlylabs/solana-adapter",
+    "version": "0.1.0",
+    "type": "module",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@solana/wallet-adapter-base": "^0.9.4",
+        "@solana/web3.js": "^1.41.1"
+    },
+    "devDependencies": {
+        "typescript": "^4.7.4"
+    }
+}
