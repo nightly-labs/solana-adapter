@@ -1,5 +1,5 @@
 {
-    "name": "@nightlylabs/solana-adapter",
+    "name": "@nightlylabs/wallet-solana-adapter",
     "version": "0.0.1",
     "type": "module",
     "main": "lib/index.js",
