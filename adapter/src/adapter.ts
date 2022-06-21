@@ -114,14 +114,12 @@ export class NightlyWalletAdapter extends BaseSignerWalletAdapter {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const wallet = window!.nightly!.solana!;
 
-      if (!wallet?.isConnected) {
-        try {
-          this._connecting = true;
-          await wallet.connect(onDisconnect);
-        } catch (error: any) {
-          if (error instanceof WalletError) throw error;
-          throw new WalletConnectionError(error?.message, error);
-        }
+      try {
+        this._connecting = true;
+        await wallet.connect(onDisconnect);
+      } catch (error: any) {
+        if (error instanceof WalletError) throw error;
+        throw new WalletConnectionError(error?.message, error);
       }
 
       if (!wallet?.publicKey) throw new WalletAccountError();
@@ -150,12 +148,11 @@ export class NightlyWalletAdapter extends BaseSignerWalletAdapter {
     const wallet = this._wallet;
 
     if (wallet !== null) {
-      this._publicKey = null;
-      this._wallet = null;
-      this._connected = false;
-
       try {
         await wallet.disconnect();
+        this._publicKey = null;
+        this._wallet = null;
+        this._connected = false;
       } catch (_error) {
         this.emit("error", new WalletDisconnectedError());
       }
