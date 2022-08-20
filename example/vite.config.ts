@@ -16,8 +16,10 @@ export default defineConfig({
     //   buffer: true
     // })
   ],
-  define: { global: 'globalThis' }
-  // build: {
+  define: { global: 'globalThis' },
+  build: {
+    target: 'es2020'
+  }
   //   rollupOptions: {
   //     plugins: [
   //       // nodePolyfills(),
