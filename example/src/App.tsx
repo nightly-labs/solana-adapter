@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import {
@@ -9,6 +9,9 @@ import {
 } from "@solana/web3.js";
 import "./App.css";
 import { NightlyWalletAdapter } from "@nightlylabs/solana-adapter";
+import { sign } from "tweetnacl";
+import bs58 from "bs58";
+import { sha256 } from 'js-sha256'
 
 const NightlySolana = new NightlyWalletAdapter();
 const connection = new Connection("https://api.devnet.solana.com");
@@ -91,6 +94,31 @@ function App() {
           }}
         >
           Sign all and send 0.0001 SOL
+        </Button>
+        <Button
+          variant="contained"
+          style={{ margin: 10 }}
+          onClick={async () => {
+            try {
+              if (!pk) {
+                return;
+              }
+
+              const message = new TextEncoder().encode("Hello world!");
+              const shaMessage = Uint8Array.from(sha256.array("Hello world!"));
+              const signature = await NightlySolana.signMessage(message);
+
+              // Verify that the bytes were signed using the private key that matches the known public key
+              if (!sign.detached.verify(shaMessage, signature, pk.toBytes()))
+                throw new Error("Invalid signature!");
+
+              alert(`Message signature: ${bs58.encode(signature)}`);
+            } catch (error: any) {
+              alert(`Signing failed: ${error?.message}`);
+            }
+          }}
+        >
+          Sign message
         </Button>
         <Button
           variant="contained"
