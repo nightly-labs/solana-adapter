@@ -103,10 +103,9 @@ function App() {
                 return;
               }
 
-              const message = new TextEncoder().encode("I like turtles");
+              const message = new TextEncoder().encode("Hello world!");
               const signature = await NightlySolana.signMessage(message);
 
-              console.log(signature, new TextDecoder().decode(signature))
               // Verify that the bytes were signed using the private key that matches the known public key
               if (!sign.detached.verify(message, signature, pk.toBytes()))
                 throw new Error("Invalid signature!");
