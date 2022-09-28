@@ -33,6 +33,7 @@ export const NightlyWalletName = "Nightly" as WalletName;
 declare const window: NightlyWindow;
 
 export class NightlyWalletAdapter extends BaseMessageSignerWalletAdapter {
+  readonly supportedTransactionVersions = null;
   name = NightlyWalletName;
   url = "https://nightly.app";
   icon =
@@ -140,14 +141,14 @@ export class NightlyWalletAdapter extends BaseMessageSignerWalletAdapter {
     this.emit("disconnect");
   }
 
-  async signTransaction(transaction: Transaction) {
+  async signTransaction<T extends Transaction>(transaction: T): Promise<T> {
     try {
       if (!this._wallet) {
         throw new WalletNotConnectedError();
       }
 
       try {
-        return await this._wallet.signTransaction(transaction);
+        return (await this._wallet.signTransaction(transaction)) as T;
       } catch (error: any) {
         throw new WalletSignTransactionError(error?.message, error);
       }
@@ -157,16 +158,16 @@ export class NightlyWalletAdapter extends BaseMessageSignerWalletAdapter {
     }
   }
 
-  public async signAllTransactions(
-    transactions: Transaction[]
-  ): Promise<Transaction[]> {
+  public async signAllTransactions<T extends Transaction>(
+    transactions: T[]
+  ): Promise<T[]> {
     try {
       if (!this._wallet) {
         throw new WalletNotConnectedError();
       }
 
       try {
-        return await this._wallet.signAllTransactions(transactions);
+        return (await this._wallet.signAllTransactions(transactions)) as T[];
       } catch (error: any) {
         throw new WalletSignTransactionError(error?.message, error);
       }
